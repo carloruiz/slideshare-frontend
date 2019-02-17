@@ -68,12 +68,12 @@ class UploadForm extends React.Component {
 
   onSubmit = (ev) => {
     ev.preventDefault()
-    const { uploadInput, selectedOptions, fetching } = this.state
+    const { selectedOptions, fetching } = this.state
     if (fetching) { return }
     this.setState({fetching: true})
     if (this.validateInput(ev) === false) { return }
 
-    let file = uploadInput.files[0]
+    let file = this.uploadInput.files[0]
     // add 'tag' key for new tag options
     selectedOptions.map(o => o.tag = o.value)
     console.log(file)
@@ -103,9 +103,14 @@ class UploadForm extends React.Component {
         default:
           this.setState({serverError: true })
       }
-      return ''
+      console.log(response.status)
+      return response.json()
     })
-    .then(body => this.setState({response: "hello"}))
+    .then(body => {
+      console.log(this.state)
+      console.log(body);
+      this.setState({response: body})
+    })
     .catch(error => {
       console.log(error)
     })
@@ -157,7 +162,7 @@ class UploadForm extends React.Component {
         </div>
         <div className={styles.inputWrapper}>
           <input
-            ref={(ref) => { this.uploadInput = ref }}
+            ref={(ref) =>  this.uploadInput = ref }
             className={styles.fileInput}
             required
             type="file"

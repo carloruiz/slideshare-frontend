@@ -1,0 +1,33 @@
+.header {
+  background-color: #5873BC;
+  width: 100%;
+  min-height: 50px;
+  height: 5%;
+}
+
+.logo {
+  display: inline-block;
+  width: 5%;
+  max-height: 50px;
+}
+
+.company {
+  font-size: 2em;
+  padding-left: 50px;
+  vertical-align: text-bottom;
+  display: inline-block;
+  width: 45%;
+  position: relative;
+  color: white;
+}
+
+.search {
+  display: inline-block;
+  justify-content: right;
+  width: 45%;
+}
+
+.login {
+  display: inline;
+  width: 5%;
+}

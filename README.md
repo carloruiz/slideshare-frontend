@@ -1,3 +1,23 @@
+My README
+
+starting from scratch
+- yarn add stylus global
+- yarn create react-app app-name
+- cd app-name 
+- mkdir src/static/stylus
+- replace "scripts" in package.json with:
+	"build-css": "stylus -c src/static/stylus/ --out src/static/css",
+	"watch-css": "yarn run build-css && stylus -c -w src/static/stylus --out src/static/css",
+	"start-js": "react-scripts start",
+	"start": "npm-run-all -p watch-css start-js",
+	"build-js": "react-scripts build",
+	"build": "npm-run-all build-css build-js"
+- yarn add react-select react-router-dom 
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

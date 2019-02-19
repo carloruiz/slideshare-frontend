@@ -4,6 +4,7 @@ import Creatable from 'react-select/lib/Creatable';
 import Header from './header.jsx';
 import styles from '../static/css/upload.module.css';
 
+const tags_url = 'http://localhost:8000/tag'
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -39,7 +40,7 @@ class UploadForm extends React.Component {
     async function fetchTags(caller) {
       let flag = true
       while (flag) {
-        fetch('http://localhost:8000/tag')
+        fetch(tags_url)
         .then(response => response.json())
         .then( tagOptions => {
           tagOptions.map( o => {
@@ -50,7 +51,7 @@ class UploadForm extends React.Component {
         .then(() => flag = false)
         .catch(err => console.log(err))
         if (flag) {
-          await sleep(1000)
+          await sleep(1500)
         }
       }
     }
@@ -70,7 +71,12 @@ class UploadForm extends React.Component {
     ev.preventDefault()
     const { selectedOptions, fetching } = this.state
     if (fetching) { return }
-    this.setState({fetching: true})
+    this.setState({
+      fetching: true,
+      success: false,
+      serverError: false,
+      clientError: false,
+    })
     if (this.validateInput(ev) === false) { return }
 
     let file = this.uploadInput.files[0]
@@ -112,6 +118,10 @@ class UploadForm extends React.Component {
       this.setState({response: body})
     })
     .catch(error => {
+        this.setState({
+          fetching: false,
+          clientError: true,
+        })
       console.log(error)
     })
   }
@@ -131,6 +141,7 @@ class UploadForm extends React.Component {
       serverError,
     } = this.state;
 
+    console.log(this.state)
     return (
       <form onSubmit={this.onSubmit}>
         <div className={styles.inputWrapper}>
@@ -143,7 +154,12 @@ class UploadForm extends React.Component {
               onKeyPress={ e => e.which === 13 && e.preventDefault() }
               className={styles.textInput}
             />
-            <span className={styles.label}> Presentation Title </span>
+            <span className={styles.label}>
+              Presentation Title
+              { clientError && (
+                <span className={styles.error}> You already have a file with this name. </span>
+              )}
+             </span>
             <span className={styles.border}/>
           </label>
         </div>
@@ -151,9 +167,10 @@ class UploadForm extends React.Component {
           <label className={styles.inp}>
             <input
               type='text'
+              required
               name="description"
               placeholder="&nbsp;"
-              onKeyPress={ e => e.which === 13 && e.preventDefault() }
+              onKeyPress={ e =>   e.which === 13 && e.preventDefault() }
               className={styles.textInput}
             />
             <span className={styles.label}> Presentation Description </span>
@@ -183,7 +200,8 @@ class UploadForm extends React.Component {
 
         <br />
         <div>
-          <button className={styles.button}>Upload</button>
+          <button className={styles.button}>{ fetching ? "This may take a moment..." : "Upload" }</button>
+          { serverError && "There was an error uploading your file. "}
         </div>
       </form>
     );

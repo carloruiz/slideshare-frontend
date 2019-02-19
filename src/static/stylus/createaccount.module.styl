@@ -12,12 +12,30 @@
 .uploadDiv > h1
   font-weight: 1
 
+.button
+  display: flex
+  justify-content: center
+  border-radius: 8px
+  padding: 16px 32px
+  font-size: 16px
+
+
+
+.userType
+  width: 30%
+  padding-top: 20px
+  margin: 20px 0 15px 0
+
+.institutions
+  padding-top: 22px
+
+
 .inp
   position: relative
   margin: 0 auto
   width: 100%
   max-width: 280px
-  //transform: rotateX(45deg) rotateY(-10deg) rotate(25deg) scale(2)
+
 .label
   position: absolute
   top: 16px
@@ -27,6 +45,7 @@
   font-weight: 500
   transform-origin: 0 0
   transition: all .2s ease
+
 
 .border
   position: absolute
@@ -39,12 +58,6 @@
   transform-origin: 0 0
   transition: all .15s ease
 
-.button
-  display: flex
-  justify-content: center
-  border-radius: 8px
-  padding: 16px 32px
-  font-size: 16px
 
 .fileInput
   margin: 20px 0 10px 0
@@ -67,6 +80,7 @@
   font-size: 16px
   font-weight: 500
   background: none
+  background-color: white !important
   border-radius: 0
   color: #223254
   transition: all .15s ease
@@ -82,3 +96,6 @@
       transform: translateY(-40px) scale(.75)
       + .border
           transform: scaleX(1)
+
+
+

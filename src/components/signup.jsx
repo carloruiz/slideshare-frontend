@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Header from './header.jsx';
-import styles from '../static/css/createaccount.module.css';
+import styles from '../static/css/signup.module.css';
 import Select from 'react-select';
 
 
 const institutionsURL = 'http://localhost:8000/institution'
 const userURL = 'http://localhost:8000/user'
+const passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$")
 
 const ignoreEnterKey = e => e.which === 13 && e.preventDefault()
 
@@ -14,7 +15,7 @@ const customFilter = (o, s) =>
   o.label.substr(0, s.length).toLowerCase() === s.toLowerCase()
 
 
-class CreateAccount extends Component {
+class SignUp extends Component {
   render() {
     return (
       <React.Fragment>
@@ -22,14 +23,14 @@ class CreateAccount extends Component {
         <div className={styles.uploadDiv}>
           <h1> Sign Up </h1>
           <hr/>
-          <CreateAccountForm/>
+          <SignUpForm/>
         </div>
       </React.Fragment>
     )
   }
 }
 
-class CreateAccountForm extends Component {
+class SignUpForm extends Component {
   constructor(props) {
     super(props)
 
@@ -52,6 +53,17 @@ class CreateAccountForm extends Component {
 
   validateForm = form => {
     // TODO
+
+    if (form.password.value.match(passwordRegex) == null) {
+      this.setState({ passwordError: true })
+      return false
+    }
+
+    if (form.username.value.length > 10 || form.firstname.value.length > 15 ||
+      form.lastname.length > 15 || form.email.value.length > 20) {
+        this.setState({ clienError: true})
+        return false
+    }
     return true
   }
 
@@ -136,6 +148,7 @@ class CreateAccountForm extends Component {
   render() {
     const {
       userTypeOptions,
+      clientError,
       institutions,
       selectedOptions,
       fetching,
@@ -254,6 +267,11 @@ class CreateAccountForm extends Component {
           />
         </div>
         <br />
+        { clientError && (
+          <span className={styles.error}>
+            One of your fields exceeds the maximum length
+          </span>
+        )}
         <div>
           <button className={styles.button}>{ fetching ? "Signing Up..." : "Sign up" }</button>
           { serverError && "There was an error signing you up. Sorry. " }
@@ -265,70 +283,4 @@ class CreateAccountForm extends Component {
 
 
 
-export default CreateAccount;
-
-
-      /*
-
-
-        <div>
-          Tags {this.state.tagErr && "*Please select at least one tag"}
-          <Select
-            name="tags"
-            value={selectedOptions}
-            onChange={this.handleTagChange}
-            options={institutions}
-            isMulti
-            className={styles.creatable}
-          />
-        </div>
-
-
-
-
-      <Formol onSubmit={this.onSubmit}>
-        <Field name="firstname">
-          First Name
-        </Field>
-        <Field name="lastname">
-          Last Name
-        </Field>
-        <Field required name="username">
-          Username
-        </Field>
-        <Field required name="email">
-          Email
-        </Field>
-        <Field type='select' name='userType' choices={userTypeOptions}>
-          User Type
-        </Field>
-        <Field
-          name="affiliations"
-          type="select-menu"
-          choices={institutions}
-          multiple
-        >
-          Affiliations
-        </Field>
-      </Formol>
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default SignUp;

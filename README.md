@@ -15,6 +15,8 @@ starting from scratch
 - yarn add react-select react-router-dom 
 
 
+TODOs
+- enable update account information (update endpoint is done)
 
 
 

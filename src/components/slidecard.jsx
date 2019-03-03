@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
+import { Link } from'react-router-dom';
+import styles from '../static/css/slidecard.module.css'
 
-import styles from '../css/slidecard.module.css'
-
-const SlideCard = ({slide}) =>
+const SlideCard = ({slide, hideAuthor})=>
   <div className={styles.slideCard}>
     <div className={styles.title}>
-      {slide.name}
+      {slide.title}
     </div>
     <div className={styles.thumbnail}>
-      <img src={slide.thumbnail} width="140" height="100"/>
+      <img src={slide.thumbnail + '001.jpg'} width="280" height="200" className={styles.image}/>
+      <div className={styles.description}>
+        {slide.description}
+      </div>
     </div>
-    <div className={styles.author}>
-      by: {slide.username}
-    </div>
-    <div className={styles.description}>
-      {slide.description}
-    </div>
+    <Link to={'/profile/'+slide.userid} username={slide.username} className={styles.linkText}>
+      <div className={styles.author}>
+        { hideAuthor === undefined && ("by: "+slide.username) }
+      </div>
+    </Link>
   </div>
+
+
 
   export default SlideCard;
 

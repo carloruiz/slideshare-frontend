@@ -17,6 +17,8 @@ starting from scratch
 
 TODOs
 - enable update account information (update endpoint is done)
+- check slashes on routes
+
 
 
 

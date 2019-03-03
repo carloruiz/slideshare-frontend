@@ -1,32 +1,15 @@
 import React, { Component } from 'react';
 import Creatable from 'react-select/lib/Creatable';
-
 import Header from './header.jsx';
 import styles from '../static/css/upload.module.css';
-
-const tags_url = 'http://localhost:8000/tag'
+import { tagsURL } from '../shared.jsx';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
 class Upload extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Header/>
-        <div className={styles.uploadDiv}>
-          <h1> Upload </h1>
-          <hr/>
-          <UploadForm/>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-
-class UploadForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +23,7 @@ class UploadForm extends React.Component {
     async function fetchTags(caller) {
       let flag = true
       while (flag) {
-        fetch(tags_url)
+        fetch(tagsURL)
         .then(response => response.json())
         .then( tagOptions => {
           tagOptions.map( o => {
@@ -143,67 +126,71 @@ class UploadForm extends React.Component {
 
     console.log(this.state)
     return (
-      <form onSubmit={this.onSubmit}>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
+      <div className={styles.uploadDiv}>
+        <h1> Upload </h1>
+        <hr/>
+        <form onSubmit={this.onSubmit}>
+          <div className={styles.inputWrapper}>
+            <label className={styles.inp}>
+              <input
+                type='text'
+                required
+                name="title"
+                placeholder="&nbsp;"
+                onKeyPress={ e => e.which === 13 && e.preventDefault() }
+                className={styles.textInput}
+              />
+              <span className={styles.label}>
+                Presentation Title
+                { clientError && (
+                  <span className={styles.error}> You already have a file with this name. </span>
+                )}
+               </span>
+              <span className={styles.border}/>
+            </label>
+          </div>
+          <div className={styles.inputWrapper}>
+            <label className={styles.inp}>
+              <input
+                type='text'
+                required
+                name="description"
+                placeholder="&nbsp;"
+                onKeyPress={ e =>   e.which === 13 && e.preventDefault() }
+                className={styles.textInput}
+              />
+              <span className={styles.label}> Presentation Description </span>
+              <span className={styles.border}/>
+            </label>
+          </div>
+          <div className={styles.inputWrapper}>
             <input
-              type='text'
+              ref={(ref) =>  this.uploadInput = ref }
+              className={styles.fileInput}
               required
-              name="title"
-              placeholder="&nbsp;"
-              onKeyPress={ e => e.which === 13 && e.preventDefault() }
-              className={styles.textInput}
-            />
-            <span className={styles.label}>
-              Presentation Title
-              { clientError && (
-                <span className={styles.error}> You already have a file with this name. </span>
-              )}
-             </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              type='text'
-              required
-              name="description"
-              placeholder="&nbsp;"
-              onKeyPress={ e =>   e.which === 13 && e.preventDefault() }
-              className={styles.textInput}
-            />
-            <span className={styles.label}> Presentation Description </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <input
-            ref={(ref) =>  this.uploadInput = ref }
-            className={styles.fileInput}
-            required
-            type="file"
-            accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
-        </div>
+              type="file"
+              accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+          </div>
 
-        <div>
-          Tags {this.state.tagErr && "*Please select at least one tag"}
-          <Creatable
-            name="tags"
-            value={selectedOptions}
-            onChange={this.handleTagChange}
-            options={tagOptions}
-            isMulti
-            className={styles.creatable}
-          />
-        </div>
+          <div>
+            Tags {this.state.tagErr && "*Please select at least one tag"}
+            <Creatable
+              name="tags"
+              value={selectedOptions}
+              onChange={this.handleTagChange}
+              options={tagOptions}
+              isMulti
+              className={styles.creatable}
+            />
+          </div>
 
-        <br />
-        <div>
-          <button className={styles.button}>{ fetching ? "This may take a moment..." : "Upload" }</button>
-          { serverError && "There was an error uploading your file. "}
-        </div>
-      </form>
+          <br />
+          <div>
+            <button className={styles.button}>{ fetching ? "This may take a moment..." : "Upload" }</button>
+            { serverError && "There was an error uploading your file. "}
+          </div>
+        </form>
+      </div>
     );
   }
 }

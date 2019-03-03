@@ -8,7 +8,7 @@ class Header extends Component {
       <div className={styles.headerDiv}>
           <div className={styles.logo}>
             <Link to="/">
-              <img src="./logo.svg" height="50px"/>
+              <img src="/logo.svg" height="50px"/>
             </Link>
           </div>
           <div className={styles.company}>
@@ -21,10 +21,13 @@ class Header extends Component {
         </div>
         <div className={styles.nav}>
           <Link to="/settings" >
-            <img src="./settings.svg" align="right" className={styles.linkImg}/>
+            <img src="/settings.svg" align="right" className={styles.linkImg}/>
           </Link>
           <Link to="/profile" className={styles.linkImg}>
-            <img src="./person.svg" align="right" className={styles.linkImg}/>
+            <img src="/person.svg" align="right" className={styles.linkImg}/>
+          </Link>
+          <Link to="/upload" >
+            <img src="/upload.svg" align="right" className={styles.linkImg}/>
           </Link>
         </div>
       </div>

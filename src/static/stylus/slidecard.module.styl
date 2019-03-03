@@ -1,0 +1,44 @@
+.slideCard
+  width: 300px
+  display: inline-grid
+  grid-template-rows: 1fr 5fr 1fr
+  grid-template-areas: "title"\
+                       "thumbnail"\
+                       "author"
+
+
+.title
+  grid-area: title
+
+.thumbnail
+  grid-area: thumbnail
+
+.author
+  grid-area: author
+
+
+.description
+  transform: translate(20px, -200px)
+  position: absolute
+  width: 250px
+  opacity: 0
+  transition: .5s ease
+  max-height: 170px
+  overflow: scroll
+
+.linkText
+  text-decoration: none
+  color: black
+
+.image
+  opacity: 1
+  transition .5s ease
+  backface-visibility: hidden
+
+.thumbnail:hover .image
+  opacity: 0.3
+
+.thumbnail:hover .description
+  opacity: .8
+
+

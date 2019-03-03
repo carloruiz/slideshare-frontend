@@ -1,15 +1,5 @@
 .topic {
-  overflow: scroll; 
-}
-
-.slideCard {
-  max-width: 150px;
-  display: inline-grid;
-  grid-template-rows: 2fr 5fr 2fr 1fr;
-  grid-template-areas: "title"
-                       "thumbnail"
-                       "description"
-                       "author";
+  overflow: scroll;
 }
 
 .title {

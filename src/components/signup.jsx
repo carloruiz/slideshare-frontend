@@ -1,36 +1,17 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Header from './header.jsx';
+import Input from './subcomponents/input.jsx';
 import styles from '../static/css/signup.module.css';
 import Select from 'react-select';
-
-
-const institutionsURL = 'http://localhost:8000/institution'
-const userURL = 'http://localhost:8000/user'
-const passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$")
+import { Redirect } from 'react-router-dom'
+import { userURL, institutionsURL } from '../shared.jsx'
 
 const ignoreEnterKey = e => e.which === 13 && e.preventDefault()
 
 const customFilter = (o, s) =>
   o.label.substr(0, s.length).toLowerCase() === s.toLowerCase()
 
-
 class SignUp extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Header/>
-        <div className={styles.uploadDiv}>
-          <h1> Sign Up </h1>
-          <hr/>
-          <SignUpForm/>
-        </div>
-      </React.Fragment>
-    )
-  }
-}
-
-class SignUpForm extends Component {
   constructor(props) {
     super(props)
 
@@ -53,27 +34,39 @@ class SignUpForm extends Component {
 
   validateForm = form => {
     // TODO
-
-    if (form.password.value.match(passwordRegex) == null) {
+    let password = form.password.value
+    if (password && password.length < 8) {
       this.setState({ passwordError: true })
       return false
     }
 
-    if (form.username.value.length > 10 || form.firstname.value.length > 15 ||
-      form.lastname.length > 15 || form.email.value.length > 20) {
-        this.setState({ clienError: true})
+    const fields = ['username', 'firstname', 'lastname', 'email']
+    const limits = [15,15,15,20]
+    let field
+    for (var i=0; i < fields.length; i++) {
+      field = form[fields[i]]
+      if ( field && field.length > limits[i]) {
+        this.setState({ lengthError: true })
         return false
+      }
     }
+
+    let inst = this.state.selectedInstitutions
+    if (!inst || inst === []) {
+      this.setState({institutionsError: true})
+      return false
+    }
+
     return true
   }
 
   resetErrors = () => this.setState({
     serverError: false,
-    clientError: false,
-    usernameErrorServer: false,
-    emailErrorServer: false,
-    usernameErrorClient: false,
-    passwordError: false
+    usernameError: false,
+    emailError: false,
+    passwordError: false,
+    institutionsError: false,
+    lengthError: false
   })
 
   onSubmit = e => {
@@ -82,7 +75,9 @@ class SignUpForm extends Component {
     this.setState({ fetching: true })
     this.resetErrors()
 
-    if (!this.validateForm(e)) {
+    if (!this.validateForm(e.target)) {
+      this.setState({fetching: false})
+      console.log("form failed validation")
       return
     }
 
@@ -95,10 +90,9 @@ class SignUpForm extends Component {
       userType
     } = e.target
 
-    const { selectedInstitutions, selectedUserType } = this.state
+    const { selectedInstitutions } = this.state
 
     let data = new FormData();
-    console.log("before data assignments")
     data.append('username', username.value)
     data.append('firstname', firstname.value)
     data.append('lastname', lastname.value)
@@ -106,7 +100,6 @@ class SignUpForm extends Component {
     data.append('password', password.value)
     data.append('user_type', userType.value)
     data.append('affiliations', JSON.stringify(selectedInstitutions))
-    console.log("after data assignments")
 
     fetch(userURL, {
       method: 'POST',
@@ -122,162 +115,113 @@ class SignUpForm extends Component {
           this.setState({serverError: true })
           break
         default:
-          this.setState({clientError: true })
+          break
       }
       console.log(response.status)
       return response.json()
       })
     .then(body => {
       if (body.error === "username") {
-        this.setState({usernameErrorServer: true})
+        this.setState({usernameError: true})
       } else if (body.error === "email") {
         this.setState({emailError: true})
       }
     })
     .then(() => console.log(this.state))
-    .catch(error => console.log(error))
+    .catch(error => {this.setState({serverError: true, fetching: false}); console.log(error)})
 
   }
 
+  handleAffiliationChange = (selectedInstitutions) =>
+    this.setState({ selectedInstitutions })
 
-  handleAffiliationChange = (selectedInstitutions) => {
-    this.setState({ selectedInstitutions });
-    console.log(`Options selected:`, selectedInstitutions);
-  }
 
   render() {
     const {
       userTypeOptions,
-      clientError,
       institutions,
-      selectedOptions,
       fetching,
       success,
-      usernameErrorServer,
-      usernameErrorClient,
+      usernameError,
       emailError,
+      institutionsError,
       passwordError,
-      serverError
+      serverError,
+      lengthError
     } = this.state;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              type='text'
-              required
-              name="username"
-              placeholder="&nbsp;"
-              onKeyPress={ignoreEnterKey}
-              className={styles.textInput}
-            />
-            <span className={styles.label}>
-              username
-              { usernameErrorServer && (
+      success ? (
+        <Redirect to="/profile"/>
+      ) : (
+        <div className={styles.uploadDiv}>
+          <h1> Sign Up </h1>
+          <hr/>
+          <form onSubmit={this.onSubmit}>
+            <React.Fragment>
+              <Input name="username" required>
+                username
+                { usernameError && (
+                  <span className={styles.error}>
+                    &nbsp; This username is taken
+                  </span>
+                )}
+              </Input>
+              <Input name="firstname">first name</Input>
+              <Input name="lastname">last name</Input>
+              <Input name="email" required type="email">
+                email
+                { emailError && (
+                  <span className={styles.error}>
+                    This email is already associated with an acount
+                  </span>
+                )}
+              </Input>
+              <Input name="password" required type="password">
+                password
+                { passwordError && (
+                  <span className={styles.error}>
+                     &nbsp; minimum of eight characters
+                  </span>
+                )}
+              </Input>
+              <Select
+                name="userType"
+                options={userTypeOptions}
+                className={styles.userType}
+                placeholder="user type"
+              />
+              <div className={styles.inputWrapper}>
+                { institutionsError && (
+                  <span className={styles.error}>
+                    An affiliation is required
+                  </span>
+                )}
+                <Select
+                  placeholder="Affiliated institutions"
+                  options={institutions}
+                  filterOption={customFilter}
+                  isMulti
+                  onChange={this.handleAffiliationChange}
+                  onKeyPress={ignoreEnterKey}
+                  className={styles.institutions}
+                />
+              </div>
+              <br />
+              { lengthError && (
                 <span className={styles.error}>
-                  This username is already associated with an acount
+                  One of your fields exceeds the maximum length
                 </span>
               )}
-              { usernameErrorClient && (
-                <span className={styles.error}>
-                  email formatting error message
-                </span>
-              )}
-             </span>
-            <span className={styles.border}/>
-          </label>
+              <div>
+                <button className={styles.button}>{ fetching ? "Signing Up..." : "Sign up" }</button>
+                { serverError && "There was an error signing you up. Please try again. " }
+              </div>
+            </React.Fragment>
+          </form>
         </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              name="firstname"
-              placeholder="&nbsp;"
-              onKeyPress={ignoreEnterKey}
-              className={styles.textInput}
-            />
-            <span className={styles.label}> first name </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              name="lastname"
-              placeholder="&nbsp;"
-              onKeyPress={ignoreEnterKey}
-              className={styles.textInput}
-            />
-            <span className={styles.label}> last name </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="&nbsp;"
-              onKeyPress={ignoreEnterKey}
-              className={styles.textInput}
-            />
-            <span className={styles.label}>
-              email
-              { emailError && (
-                <span className={styles.error}>
-                  This email is already associated with an acount
-                </span>
-              )}
-            </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.inp}>
-            <input
-              type="password"
-              required
-              name="password"
-              placeholder="&nbsp;"
-              onKeyPress={ignoreEnterKey}
-              className={styles.textInput}
-            />
-            <span className={styles.label}> password </span>
-            <span className={styles.border}/>
-          </label>
-        </div>
-        <div className={styles.inputWrapper}>
-          <Select
-            name="userType"
-            options={userTypeOptions}
-            className={styles.userType}
-            placeholder="user type"
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Select
-            placeholder="Affiliated institutions"
-            options={institutions}
-            filterOption={customFilter}
-            isMulti
-            onChange={this.handleAffiliationChange}
-            onKeyPress={ignoreEnterKey}
-            className={styles.institutions}
-          />
-        </div>
-        <br />
-        { clientError && (
-          <span className={styles.error}>
-            One of your fields exceeds the maximum length
-          </span>
-        )}
-        <div>
-          <button className={styles.button}>{ fetching ? "Signing Up..." : "Sign up" }</button>
-          { serverError && "There was an error signing you up. Sorry. " }
-        </div>
-      </form>
-    );
+      )
+    )
   }
 }
 

@@ -1,0 +1,53 @@
+.inp
+  position: relative
+  margin: 0 auto
+  width: 100%
+  max-width: 280px
+
+.label
+  position: absolute
+  top: 16px
+  left: 0
+  font-size: 16px
+  color: #9098A9
+  font-weight: 500
+  transform-origin: 0 0
+  transition: all .2s ease
+
+
+.border
+  position: absolute
+  bottom: 0
+  left: 0
+  height: 2px
+  width: 100%
+  background #0077FF
+  transform: scaleX(0)
+  transform-origin: 0 0
+  transition: all .15s ease
+
+.textInput
+  -webkit-appearance: none
+  width: 100%
+  border: 0
+  font-family: inherit
+  height: 80px
+  font-size: 16px
+  font-weight: 500
+  background: none
+  background-color: white !important
+  border-radius: 0
+  color: #223254
+  transition: all .15s ease
+  &:not(:placeholder-shown)
+    + span
+      color #5A667F
+      transform: translateY(-35px) scale(.75)
+  &:focus
+    background: none
+    outline: none
+    + span
+      color #0077FF
+      transform: translateY(-40px) scale(.75)
+      + .border
+          transform: scaleX(1)

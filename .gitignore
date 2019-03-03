@@ -6,7 +6,7 @@
 .pnp.js
 
 # dev
-/src/static/css 
+/src/static/css/
 
 # testing
 /coverage

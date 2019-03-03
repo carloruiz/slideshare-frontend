@@ -32,15 +32,16 @@ class Home extends Component {
       serverError
     } = this.state
 
+    if (serverError) { return "Server Error. Reload page"}
     return (
       <React.Fragment>
-        {fetched  && !serverError ? (
+        {fetched  && (
           <div className="home">
             { ordering.map(topic =>
               <Topic topic={topic} slides={slides[topic]} key={topic} />
             )}
           </div>
-        ) : "Server Error. Reload page"}
+        )}
       </React.Fragment>
     )
   }

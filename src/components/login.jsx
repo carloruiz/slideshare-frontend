@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import Header from './header.jsx'
 import Input from './subcomponents/input.jsx'
 import styles from '../static/css/login.module.css'
@@ -9,7 +9,10 @@ import { loginURL }  from '../shared.jsx'
 class Login extends Component {
   constructor(props){
     super(props)
-    this.state = {fetching: false, success: false}
+    this.state = {
+      fetching: false,
+      success: false,
+    }
   }
 
   onSubmit = (e) => {
@@ -73,6 +76,11 @@ class Login extends Component {
               { serverError && "There was an error signing you up. Please try again. " }
             </React.Fragment>
           </form>
+          <Link to="/signup">
+            <div className={styles.signup}>
+              Don't have an account? Sign up!
+            </div>
+          </Link>
         </div>
       </div>
     )

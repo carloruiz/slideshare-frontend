@@ -69,7 +69,7 @@ class Profile extends Component {
     } = this.state
 
 
-    if (!userid) { return <Redirect to='/signup'/> }
+    if (!userid) { return <Redirect to='/login'/> }
 
     return (nullUser || fetchError) ? <h3>Error fetching user with this id</h3> : (
       <div className={styles.profileDiv}>
@@ -102,10 +102,10 @@ class Profile extends Component {
         <div className={styles.slides}>
           <hr/>
           <br/>
-          {(!slides || slides.length===0) ? (<h3>No slides yet!</h3>) : (
+          { slides && ((slides.length===0) ? (<h3>No slides yet!</h3>) : (
             slides.map(slide =>
               <SlideCard slide={slide} key={slide.id} hideAuthor/>)
-          )}
+          ))}
         </div>
       </div>
     )

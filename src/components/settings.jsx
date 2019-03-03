@@ -17,7 +17,6 @@ const ignoreEnterKey = e => e.which === 13 && e.preventDefault()
 class Settings extends Component {
   constructor(props) {
     super(props)
-    console.log(Cookie.get())
     this.state = {
       userCookies: Cookie.get('username') ? {
         userid: Cookie.get('userid'),

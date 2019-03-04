@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Input from './subcomponents/input.jsx';
-import styles from '../static/css/signup.module.css';
+import styles from './static/css/signup.module.css';
 import Select from 'react-select';
 import { Redirect } from 'react-router-dom'
 import { userURL, institutionsURL } from '../shared.jsx'

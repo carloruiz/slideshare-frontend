@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Cookie from 'js-cookie'
 import SlideCard from './slidecard.jsx'
-import styles from '../static/css/profile.module.css'
+import styles from './static/css/profile.module.css'
 import { slideUserURL, userURL } from '../shared.jsx'
 
 

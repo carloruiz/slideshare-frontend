@@ -11,6 +11,7 @@ function sleep(ms) {
 
 class Upload extends React.Component {
   constructor(props) {
+    console.log("I am upload and I'm being called")
     super(props);
     this.state = {
       selectedOptions: [],
@@ -34,7 +35,7 @@ class Upload extends React.Component {
           })
           caller.setState({ tagOptions })
         })
-        .then(() => flag.append(false))
+        .then(() => flag.push(false))
         .catch(err => console.log(err))
         if (flag) {
           await sleep(1500)
@@ -128,7 +129,7 @@ class Upload extends React.Component {
     } = this.state;
 
     console.log(this.state)
-    return ( !success ? <Redirect to="/profile"/> : (
+    return ( success ? <Redirect to="/profile"/> : (
       <div className={styles.uploadDiv}>
         <h1> Upload </h1>
         <hr/>

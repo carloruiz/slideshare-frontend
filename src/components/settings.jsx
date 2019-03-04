@@ -4,7 +4,7 @@ import Select from 'react-select'
 import Cookie from 'js-cookie'
 import { Redirect } from 'react-router-dom'
 import { userURL, logoutURL } from '../shared.jsx'
-import Input from './subcomponents/input.jsx'
+import Input from './input.jsx'
 import styles from './static/css/signup.module.css'
 
 

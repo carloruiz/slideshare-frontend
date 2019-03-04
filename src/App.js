@@ -1,29 +1,13 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from './components/home.jsx';
-import Header from './components/header.jsx'
-import SignUp from './components/signup.jsx';
-import Upload from './components/upload.jsx';
-import Profile from './components/profile.jsx';
-import Settings from './components/settings.jsx';
-import Login from './components/login.jsx';
-import './static/css/app.css'
-
-/*
-class Layout extends Component {
-  constructor(props) {
-    this.child = props.children
-  }
-
-  render(){
-    <React.Fragment>
-      <Header/>
-      {child}
-    </React.Fragment>
-  }
-}
-*/
+import Home from './components/Home.jsx';
+import Header from './components/Header.jsx'
+import SignUp from './components/Signup.jsx';
+import Upload from './components/Upload.jsx';
+import Profile from './components/Profile.jsx';
+import Settings from './components/Settings.jsx';
+import Login from './components/Login.jsx';
 
 const Layout = (Child) => {
   const Wrapper = (props) => {

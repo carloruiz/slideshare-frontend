@@ -6,7 +6,8 @@
 .pnp.js
 
 # dev
-/src/static/css/
+/src/static/css/*
+!src/static/css/.gitkeep
 *.swp
 *.swo
 

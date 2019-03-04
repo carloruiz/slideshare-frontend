@@ -13,7 +13,7 @@ class Header extends Component {
           </div>
           <div className={styles.company}>
             <Link to="/" className={styles.linkText}>
-              Slide Share
+              SlideGraph
             </Link>
           </div>
         <div className={styles.search}>

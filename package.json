@@ -20,7 +20,8 @@
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
-	"test": "echo TODO"
+	"test": "yarn build && echo 'TODO'",
+	"deploy": "aws s3 sync build/ s3://slidegraph.net --delete"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import Creatable from 'react-select/lib/Creatable';
-import styles from './static/css/upload.module.css';
+import styles from '../static/css/upload.module.css';
 import { tagsURL } from '../shared.jsx';
 
 function sleep(ms) {

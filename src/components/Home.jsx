@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './static/css/home.module.css'
+import styles from '../static/css/home.module.css'
 import SlideCard from './slidecard.jsx'
 import { homeURL } from '../shared.jsx';
 

@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import styles from './static/css/input.module.css';
+import styles from '../static/css/input.module.css';
 
 const ignoreEnterKey = e => e.which === 13 && e.preventDefault()
 

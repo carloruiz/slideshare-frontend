@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from'react-router-dom';
-import styles from './static/css/slidecard.module.css'
+import styles from '../static/css/slidecard.module.css'
 
 const SlideCard = ({slide, hideAuthor})=>
   <div className={styles.slideCard}>

@@ -4,11 +4,6 @@ import Creatable from 'react-select/lib/Creatable';
 import styles from '../static/css/upload.module.css';
 import { tagsURL } from '../shared.jsx';
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
 class Upload extends React.Component {
   constructor(props) {
     console.log("I am upload and I'm being called")
@@ -20,29 +15,24 @@ class Upload extends React.Component {
   }
 
   componentDidMount() {
-    // TODO loop while server responds with 500
-    // weird flag to suppress compilation warnings
-    let flag = []
-    async function fetchTags(caller) {
-      while (flag.length === 0) {
-        fetch(tagsURL)
-        .then(response => response.json())
-        .then( tagOptions => {
-          tagOptions.map( o => {
-            o.value = o.tag
-            o.label = o.tag
-            return o
-          })
-          caller.setState({ tagOptions })
-        })
-        .then(() => flag.push(false))
-        .catch(err => console.log(err))
-        if (flag) {
-          await sleep(1500)
+    fetch(tagsURL)
+    .then(response => {
+        if (response.status !== 200){
+          this.setState({institutionsError: true})
+          console.log(response.status)
+          throw new Error("Institutions did not respond with 200 code")
         }
-      }
-    }
-    fetchTags(this)
+        return response.json()
+      })
+    .then(tagOptions => {
+      tagOptions.map( o => {
+        o.value = o.tag
+        o.label = o.tag
+        return o
+      })
+      this.setState({ tagOptions })
+    })
+    .catch(err => console.log(err))
   }
 
   validateInput = (ev) => {
@@ -122,6 +112,7 @@ class Upload extends React.Component {
     const {
       tagOptions,
       selectedOptions,
+      institutionsError,
       fetching,
       success,
       clientError,
@@ -178,6 +169,7 @@ class Upload extends React.Component {
 
           <div>
             Tags {this.state.tagErr && "*Please select at least one tag"}
+            {institutionsError && "Error fetching institutions. Please reload page"}
             <Creatable
               name="tags"
               value={selectedOptions}

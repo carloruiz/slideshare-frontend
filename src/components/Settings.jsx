@@ -31,28 +31,20 @@ class Settings extends Component {
 
   componentDidMount() {
     // TODO handle empty responses
-    if (!this.state.userCookies) {
-      return
-    }
+    if (!this.state.userCookies) { return }
     const fetchURL = userURL + this.state.userCookies.userid
-    async function fetchUserInfo(caller) {
-      let flag = true
-      while (flag) {
-        fetch(fetchURL) // get
-        .then(response => {
-          console.log('hello')
+    fetch(fetchURL)
+    .then(response => {
+      console.log(response.status)
+      if (response.status !== 200) {
+          this.setState({userFetchError: true})
           console.log(response.status)
-          if (response.status !== 500) { flag = false }
-          return response.json()})
-        .then(user => caller.setState({user}))
-        .then(() => console.log("sucessful fetch"))
-        .catch(err => console.log(err))
-        if (flag) {
-          await sleep(1500)
-        }
+          throw new Error("User endpoint did not respond with 200 code")
       }
-    }
-    fetchUserInfo(this)
+      return response.json()})
+    .then(user => caller.setState({user}))
+    .then(() => console.log("sucessful fetch"))
+    .catch(err => console.log(err))
   }
 
   validateForm = form => {
@@ -165,6 +157,7 @@ class Settings extends Component {
 
   render() {
     const {
+      userFetchError,
       userCookies,
       userTypeOptions,
       user,
@@ -180,6 +173,7 @@ class Settings extends Component {
       <div className={styles.uploadDiv}>
         <h1> Account Information </h1>
         <hr/>
+        {userFetchError && "There was a server error fetching user information. Please reload page"}
         <form onSubmit={this.onSubmit}>
         <React.Fragment>
           <DefaultInput name="username" value={ user && user.username }>

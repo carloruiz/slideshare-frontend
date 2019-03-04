@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import Header from './header.jsx'
 import Input from './subcomponents/input.jsx'
 import styles from '../static/css/login.module.css'
 import { loginURL }  from '../shared.jsx'

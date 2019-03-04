@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from'react-router-dom';
 import styles from '../static/css/slidecard.module.css'
 
@@ -8,7 +8,7 @@ const SlideCard = ({slide, hideAuthor})=>
       {slide.title}
     </div>
     <div className={styles.thumbnail}>
-      <img src={slide.thumbnail + '001.jpg'} width="280" height="200" className={styles.image}/>
+      <img src={slide.thumbnail + '001.jpg'} width="280" height="200" className={styles.image} alt="thumbnail"/>
       <div className={styles.description}>
         {slide.description}
       </div>

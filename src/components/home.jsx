@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../css/home.module.css'
 import SlideCard from './slidecard.jsx'
-import Header from './header.jsx';
 import { homeURL } from '../shared.jsx';
 
 class Home extends Component {
@@ -15,7 +14,7 @@ class Home extends Component {
     .then(response => {
       if (response.status !== 200) {
         this.setState({fetched: true, serverError: true})
-        throw "Server Error"
+        throw new Error("Server Error")
       }
       return response.json()
     })

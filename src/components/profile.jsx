@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Cookie from 'js-cookie'
-import Header from './header.jsx'
 import SlideCard from './slidecard.jsx'
 import styles from '../static/css/profile.module.css'
 import { slideUserURL, userURL } from '../shared.jsx'
@@ -25,9 +24,7 @@ class Profile extends Component {
 
     this.state = {
       userid,
-      username,
-      fetchingUser: true,
-      fetchingSlides: true
+      username
     }
   }
 
@@ -37,9 +34,9 @@ class Profile extends Component {
 
    fetch(userURL + userid)
     .then(response => {
-      if (response.status !== 200) { throw "Server Error" }
+      if (response.status !== 200) { throw new Error("Server Error") }
       return response.json() })
-    .then(user => this.setState({user, fetchingSlides: false}))
+    .then(user => this.setState({user}))
     .catch(err => {
       this.setState({nullUser: true, fetchError: true})
       console.log(err)
@@ -47,9 +44,9 @@ class Profile extends Component {
 
     fetch(slideUserURL + userid)
     .then(response => {
-      if (response.status !== 200) { throw "Server Error" }
+      if (response.status !== 200) { throw new Error("Server Error") }
       return response.json() })
-    .then(slides => this.setState({slides, fetchingUser: false}))
+    .then(slides => this.setState({slides}))
     .catch(err => {
       this.setState({nullUser: true, fetchError: true})
       console.log(err)
@@ -62,8 +59,6 @@ class Profile extends Component {
       slides,
       userid,
       username,
-      fetchingUser,
-      fetchingSlides,
       nullUser,
       fetchError
     } = this.state

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Redirect } from 'react-router-dom'
 import Creatable from 'react-select/lib/Creatable';
-import Header from './header.jsx';
 import styles from '../static/css/upload.module.css';
 import { tagsURL } from '../shared.jsx';
 
@@ -20,18 +20,21 @@ class Upload extends React.Component {
 
   componentDidMount() {
     // TODO loop while server responds with 500
+    // weird flag to suppress compilation warnings
+    let flag = []
     async function fetchTags(caller) {
-      let flag = true
-      while (flag) {
+      while (flag.length === 0) {
         fetch(tagsURL)
         .then(response => response.json())
         .then( tagOptions => {
           tagOptions.map( o => {
             o.value = o.tag
-            o.label = o.tag })
+            o.label = o.tag
+            return o
+          })
           caller.setState({ tagOptions })
         })
-        .then(() => flag = false)
+        .then(() => flag.append(false))
         .catch(err => console.log(err))
         if (flag) {
           await sleep(1500)
@@ -83,7 +86,7 @@ class Upload extends React.Component {
     .then(response => {
       this.setState({fetching: false})
       switch (response.status) {
-        case 204:
+        case 200:
           this.setState({success: true})
           break
         case 400:
@@ -125,7 +128,7 @@ class Upload extends React.Component {
     } = this.state;
 
     console.log(this.state)
-    return (
+    return ( !success ? <Redirect to="/profile"/> : (
       <div className={styles.uploadDiv}>
         <h1> Upload </h1>
         <hr/>
@@ -191,7 +194,7 @@ class Upload extends React.Component {
           </div>
         </form>
       </div>
-    );
+    ));
   }
 }
 

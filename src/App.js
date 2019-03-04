@@ -5,9 +5,9 @@ import Home from 'components/Home.jsx';
 import Header from 'components/Header.jsx'
 import SignUp from 'components/Signup.jsx';
 import Upload from 'components/Upload.jsx';
-import Profile from './components/Profile.jsx';
-import Settings from './components/Settings.jsx';
-import Login from './components/Login.jsx';
+import Profile from 'components/Profile.jsx';
+import Settings from 'components/Settings.jsx';
+import Login from 'components/Login.jsx';
 
 const Layout = (Child) => {
   const Wrapper = (props) => {

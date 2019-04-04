@@ -1,6 +1,6 @@
 
-const base_url = 'http://localhost:8000/'
-//const base_url = 'http://ngnix-slidegraph-production-1870135878.us-east-1.elb.amazonaws.com/'
+//const base_url = 'http://localhost:8000/'
+const base_url = 'http://ngnix-slidegraph-production-1870135878.us-east-1.elb.amazonaws.com/'
 export const pdfBaseURL           = 'https://s3.amazonaws.com/slide-share-pdfs/'
 
 export const homeURL          = base_url

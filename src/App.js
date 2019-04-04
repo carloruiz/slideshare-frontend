@@ -8,6 +8,7 @@ import Upload from './components/Upload.jsx';
 import Profile from './components/Profile.jsx';
 import Settings from './components/Settings.jsx';
 import Login from './components/Login.jsx';
+import Slide from './components/Slide.jsx';
 
 const Layout = (Child) => {
   const Wrapper = (props) => {
@@ -21,15 +22,16 @@ const Layout = (Child) => {
   return Wrapper
 }
 
-
+// TODO add route '/:userid' after all routes and drop profile
 const App = () => (
-  <div className='app'>
+  <div className='App'>
     <BrowserRouter>
       <Switch>
         <Route exact path='/' component={Layout(Home)}></Route>
         <Route exact path='/login' component={Layout(Login)}></Route>
         <Route path='/signup' component={Layout(SignUp)}></Route>
         <Route path='/settings' component={Layout(Settings)}></Route>
+        <Route path='/slide/:slideId/:slideTitle' component={Layout(Slide)}></Route>
         <Route path='/profile/:userid' component={Layout(Profile)}></Route>
         <Route path='/profile' component={Layout(Profile)}></Route>
         <Route path='/upload' component={Layout(Upload)}></Route>

@@ -13,7 +13,6 @@ class Profile extends Component {
     console.log(this.props)
     if (this.props.match.params.userid) {
       userid = this.props.match.params.userid
-      username = this.props.username
     } else if (Cookie.get('userid')) {
       userid = Cookie.get('userid')
       username = Cookie.get('username')
@@ -70,7 +69,7 @@ class Profile extends Component {
       <div className={styles.profileDiv}>
         <div className={styles.username}>
           <div>
-            <h1> {username} </h1>
+            <h1> {user && user.username} </h1>
             <hr className={styles.hr}/>
           </div>
         </div>

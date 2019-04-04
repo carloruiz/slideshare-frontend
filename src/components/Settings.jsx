@@ -42,7 +42,7 @@ class Settings extends Component {
           throw new Error("User endpoint did not respond with 200 code")
       }
       return response.json()})
-    .then(user => caller.setState({user}))
+    .then(user => this.setState({user}))
     .then(() => console.log("sucessful fetch"))
     .catch(err => console.log(err))
   }

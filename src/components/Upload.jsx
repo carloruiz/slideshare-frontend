@@ -1,13 +1,19 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import Creatable from 'react-select/lib/Creatable';
+import Cookies from 'js-cookie'
 import styles from '../static/css/upload.module.css';
-import { tagsURL } from '../shared.jsx';
+import { tagsURL, slideURL } from '../shared.jsx';
 
 class Upload extends React.Component {
   constructor(props) {
-    console.log("I am upload and I'm being called")
     super(props);
+
+    if (!Cookies.get('userid')) {
+      this.state = { redirect: true}
+      return
+    }
+
     this.state = {
       selectedOptions: [],
       tagOptions: []
@@ -65,13 +71,13 @@ class Upload extends React.Component {
     data.append('file', file, file.name)
     data.append('title', ev.target.title.value)
     data.append('size', file.size)
-    data.append('userid', 4)
-    data.append('username', 'cvondrick') // possible race condition
+    data.append('userid', Cookies.get('userid'))
+    data.append('username', Cookies.get('username')) // possible race condition
     data.append('description', ev.target.description.value)
     data.append('tags', JSON.stringify(selectedOptions))
 
 
-    fetch('http://localhost:8000/slide', {
+    fetch(slideURL, {
       method: 'POST',
       body: data })
     .then(response => {
@@ -117,9 +123,15 @@ class Upload extends React.Component {
       success,
       clientError,
       serverError,
+      redirect
     } = this.state;
 
     console.log(this.state)
+
+    if (redirect) {
+      return (<Redirect to="/login"/>)
+    }
+
     return ( success ? <Redirect to="/profile"/> : (
       <div className={styles.uploadDiv}>
         <h1> Upload </h1>

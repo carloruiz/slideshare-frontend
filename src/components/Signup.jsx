@@ -107,7 +107,7 @@ class SignUp extends Component {
     .then(response => {
       this.setState({fetching: false})
       switch (response.status) {
-        case 204:
+        case 200:
           this.setState({success: true})
           break
         case 500:

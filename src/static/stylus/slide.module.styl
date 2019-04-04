@@ -1,0 +1,59 @@
+.wrapper
+  width: 80%
+  margin: auto
+  display: grid
+  grid-template-columns: 1fr 1fr
+  grid-template-rows: 2fr 1fr
+  grid-template-areas: "metadata download"\
+                       "tags download" \
+
+.metadata
+  grid-area: metadata
+
+.download
+  grid-area: download
+  margin: auto
+
+.tags
+  grid-area: tags
+
+.downloadButton
+  border-radius: 5px
+  font-size: 2em
+  display: inline-block
+
+.slideDiv
+  grid-area: slideDiv
+  display: inline-grid
+  width: 100%
+  grid-template-columns: 1fr 8fr 1fr
+  grid-template-areas: "prevDiv pdf nextDiv "
+
+.pdf
+  grid-area: pdf
+  margin:auto
+
+.prevDiv
+  margin: auto
+  grid-area: prevDiv
+
+.nextDiv
+  margin: auto
+  grid-area: nextDiv
+
+.navButton
+  border-radius: 15px
+  font-size: 3em
+  display: inline-block
+
+.tag
+  grid-area: tag
+  display: inline
+  margin-right: 10px
+  padding: 3px 5px
+  border-radius: 3px
+  background-color: grey
+
+
+
+
